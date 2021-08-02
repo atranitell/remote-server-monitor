@@ -21,7 +21,7 @@ with open('README.md') as f:
 
 
 setup(
-    name="tq",
+    name="rs",
     version="0.0.1",
     author="Kai Jin",
     author_email="atranitell@gmail.com",
