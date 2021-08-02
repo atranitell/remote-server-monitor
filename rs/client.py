@@ -13,6 +13,7 @@
 # limitations under the License.
 # ==============================================================================
 import argparse
+from logging import log
 import socket
 import json
 
@@ -23,7 +24,7 @@ from .logger import logger
 class DaemonClient():
 
   def __init__(self):
-    logger.init('daemon.client.log', './')
+    logger.init('rs.client.log', './')
     logger.info('start client daemon.')
 
   def start(self, ip, port, mode='all', verbose=True):
@@ -55,10 +56,13 @@ class DaemonClient():
       for line in fp:
         ip, port = line.replace('\n', '').split(':')
         machines.append((ip, int(port), mode, False))
-
     results = []
     for m in machines:
-      results.append((m, self.start(*m)))
+      try:
+        results.append((m, self.start(*m)))
+        logger.info(f'Successfully to receive data from {m[0]}:{m[1]}.')
+      except Exception as e:
+        logger.warn(f'Failed to receive data from {m[0]}:{m[1]} due to {e}')
 
     def sep(length=200):
       return '\n' + '-' * length
@@ -83,7 +87,7 @@ class DaemonClient():
             data['cpu']['memory_percent'],
             data['cpu']['memory_shared'],
         )
-      s += sep(200) + '\n'
+      s += sep(200)
 
     if mode in ['all', 'gpu']:
       s += sep(200)
@@ -98,7 +102,7 @@ class DaemonClient():
               m[0], m[1],
               data['gpu']['driver_version'],
               data['gpu']['cuda_version'],
-              gpu['product_name'],
+              gpu['product_name'].replace('NVIDIA ', ''),
               gpu['fan_speed'],
               gpu['total_memory'],
               gpu['used_memory'],
@@ -123,7 +127,7 @@ class DaemonClient():
           )
       s += sep(200)
 
-    print(s)
+    logger.info(s)
 
 
 if __name__ == "__main__":

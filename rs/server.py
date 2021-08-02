@@ -14,19 +14,12 @@
 # ==============================================================================
 import time
 import argparse
-import torch
-import torchvision
-import tw
 import socket
-import struct
 import json
 import subprocess
-import threading
-import abc
 import xml.etree.ElementTree as ET
 import psutil
 import os
-import glob
 
 from .tfevent import TFEventAccumulator
 from .logger import logger
@@ -38,7 +31,7 @@ GB = 1024 * 1024 * 1024  # Byte to GB
 class DaemonServer():
 
   def __init__(self):
-    logger.init('daemon.server.log', './')
+    logger.init('rs.server.log', './')
 
   def send(self, conn, data):
     conn.send(json.dumps(data).encode())

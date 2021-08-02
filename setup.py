@@ -22,7 +22,7 @@ with open('README.md') as f:
 
 setup(
     name="rs",
-    version="0.0.1",
+    version="0.0.3",
     author="Kai Jin",
     author_email="atranitell@gmail.com",
     description="A Simple Remote Server and Training Manager.",
@@ -42,5 +42,6 @@ setup(
     ],
     install_requires=[
         "tensorboard",
+        "psutil"
     ],
 )
